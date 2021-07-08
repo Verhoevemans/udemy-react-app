@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import classes from './Checkout.module.css';
 
 const isEmptyValidator = (value) => value.trim() === '';
@@ -23,6 +23,10 @@ const Checkout = (props) => {
   const postalCodeInputRef = useRef();
   const cityInputRef = useRef();
 
+  useEffect(() => {
+    checkFormValidity();
+  }, [formInputsTouched]);
+
   const checkFormValidity = () => {
     setFormInputsValidity({
       name: !isEmptyValidator(nameInputRef.current.value),
@@ -32,7 +36,7 @@ const Checkout = (props) => {
     });
   };
 
-  const onChangeHandler = (event) => {
+  const markAsTouched = (event) => {
     setFormInputsTouched((previousState) => {
       const newState = { ...previousState };
       newState[event.target.id] = true;
@@ -69,8 +73,8 @@ const Checkout = (props) => {
           <input type="text"
                  id="name"
                  ref={nameInputRef}
-                 onChange={onChangeHandler}
-                 onBlur={checkFormValidity} />
+                 onChange={markAsTouched}
+                 onBlur={markAsTouched} />
           {!formInputsValidity.name && formInputsTouched.name && <p><i>Please enter a valid name</i></p>}
         </div>
         <div className={`${classes.control} ${formInputsValidity.street || !formInputsTouched.street ? '' : classes.invalid}`}>
@@ -78,8 +82,8 @@ const Checkout = (props) => {
           <input type="text"
                  id="street"
                  ref={streetInputRef}
-                 onChange={onChangeHandler}
-                 onBlur={checkFormValidity} />
+                 onChange={markAsTouched}
+                 onBlur={markAsTouched} />
           {!formInputsValidity.street && formInputsTouched.street && <p><i>Please enter a valid street</i></p>}
         </div>
         <div className={`${classes.control} ${formInputsValidity.postalCode || !formInputsTouched.postalCode ? '' : classes.invalid}`}>
@@ -87,8 +91,8 @@ const Checkout = (props) => {
           <input type="text"
                  id="postalCode"
                  ref={postalCodeInputRef}
-                 onChange={onChangeHandler}
-                 onBlur={checkFormValidity} />
+                 onChange={markAsTouched}
+                 onBlur={markAsTouched} />
           {!formInputsValidity.postalCode && formInputsTouched.postalCode && <p><i>Please enter a valid postal code</i></p>}
         </div>
         <div className={`${classes.control} ${formInputsValidity.city || !formInputsTouched.city ? '' : classes.invalid}`}>
@@ -96,8 +100,8 @@ const Checkout = (props) => {
           <input type="text"
                  id="city"
                  ref={cityInputRef}
-                 onChange={onChangeHandler}
-                 onBlur={checkFormValidity} />
+                 onChange={markAsTouched}
+                 onBlur={markAsTouched} />
           {!formInputsValidity.city && formInputsTouched.city && <p><i>Please enter a valid city</i></p>}
         </div>
       </div>
