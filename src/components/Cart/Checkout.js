@@ -51,8 +51,13 @@ const Checkout = (props) => {
     checkFormValidity();
     const formIsValid = formInputsValidity.name && formInputsValidity.street && formInputsValidity.postalCode && formInputsValidity.city;
 
-    if (!formIsValid) {
-      return;
+    if (formIsValid) {
+      props.onConfirm({
+        name: nameInputRef.current.value,
+        street: streetInputRef.current.value,
+        postalCode: postalCodeInputRef.current.value,
+        city: cityInputRef.current.value,
+      });
     }
   };
   

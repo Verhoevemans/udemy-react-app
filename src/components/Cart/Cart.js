@@ -26,6 +26,16 @@ const Cart = (props) => {
     setIsCheckingOut(true);
   };
   
+  const submitOderHandler = (userData) => {
+    fetch('https://udemy-ng-http-602ae.firebaseio.com/orders.json', {
+      method: 'POST',
+      body: JSON.stringify({
+        user: userData,
+        orderedItems: cartContext.items
+      })
+    });
+  };
+  
   const cartItems = (
     <ul className={classes['cart-items']}>
       {cartContext.items.map((item) => (
@@ -59,7 +69,7 @@ const Cart = (props) => {
         <span>Total Amount</span>
         <span>{totalAmount}</span>
       </div>
-      {isCheckingOut && <Checkout onCancel={props.onClose}/>}
+      {isCheckingOut && <Checkout onCancel={props.onClose} onConfirm={submitOderHandler} />}
       {!isCheckingOut && modalActions}
     </Modal>
   );
